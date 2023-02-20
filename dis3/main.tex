@@ -119,7 +119,7 @@ pdfkeywords={},
 }
 
 
-\title{CS189 (Spring 2023) Notes}
+\title{CS189/289A Spring 2023\\Eigenvalues and Gradient Descent}
 
 \author{
     Chawin Sitawarin \thanks{Corresponding email: \texttt{chawins@berkeley.edu}}
@@ -133,19 +133,14 @@ pdfkeywords={},
 
 \maketitle
 
-% \begin{abstract}
 
-% \end{abstract}
-
-\section{Discussion 3}
-
-\subsection{Solving Linear Regression with Gradient Descent}
+\section{Solving Linear Regression with Gradient Descent}
 
 \begin{quote}
     ``Why do we care so much about eigenvalues?''
 \end{quote}
 
-There are two billion reasons, but today we will look at one of them.
+There are a good number of reasons, but today we will look at one of them.
 
 Let's consider a quadratic function of the form
 \begin{align}
@@ -231,7 +226,9 @@ This generally tells how smooth $f$ is, and larger $L$ means that $f$ is less sm
 %
 On the other hand, $\lambda_n$ corresponds to the ``strong'' convexity of $f$, a stronger condition than convexity.
 
-Reference: \url{https://www.cs.cornell.edu/courses/cs4787/2020sp/lectures/Lecture2.pdf}
+\section*{References}
+
+The derivation is based on \url{https://www.cs.cornell.edu/courses/cs4787/2020sp/lectures/Lecture2.pdf}.
 
 % \bibliography{reference.bib}
 % \bibliographystyle{abbrvnat}
@@ -248,18 +245,3 @@ Reference: \url{https://www.cs.cornell.edu/courses/cs4787/2020sp/lectures/Lectur
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
-
-
-% This document was modified from the file originally made available by
-% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
-% by Iain Murray in 2018, and modified by Alexandre Bouchard in
-% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
-% Modified again in 2023 by Sivan Sabato and Jonathan Scarlett.
-% Previous contributors include Dan Roy, Lise Getoor and Tobias
-% Scheffer, which was slightly modified from the 2010 version by
-% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
-% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
-% slightly modified from Prasad Tadepalli's 2007 version which is a
-% lightly changed version of the previous year's version by Andrew
-% Moore, which was in turn edited from those of Kristian Kersting and
-% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
