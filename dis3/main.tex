@@ -1,0 +1,265 @@
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+% \usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2023} with \usepackage[nohyperref]{icml2023} above.
+% \usepackage{hyperref}
+\usepackage{natbib}
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+\usepackage{multicol}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage{arxiv}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\input{math_commands.tex}
+
+% if you use cleveref..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+\usepackage[disable,textsize=tiny]{todonotes}
+% \usepackage[textsize=tiny]{todonotes}
+
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage[pagebackref]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    allcolors=DarkBlue
+%   allbordercolors=red
+}
+\usepackage{courier}
+\usepackage{xspace}
+\usepackage{bm}
+\usepackage{wrapfig}
+\usepackage{oubraces}
+\usepackage{amsthm}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\captionsetup[table]{skip=10pt}
+\RestyleAlgo{ruled}
+
+\definecolor{Gray}{gray}{0.7}
+\newcolumntype{g}{>{\columncolor{Gray}}r}
+
+\def\Ex{\mathop{\mathbb{E}}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\sgn}[1]{\text{sign}\left(#1\right)}
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+\def\minop{\mathop{\rm min}\limits}
+\def\maxop{\mathop{\rm max}\limits}
+\newcommand{\ber}[1]{\mathrm{Bern}\left(#1\right)}
+\def\unif{\mathcal{U}}
+\def\eqref#1{Eqn.~(\ref{#1})}
+\def\figref#1{Fig.~\ref{#1}}
+
+% \crefname{algocf}{alg.}{algs.}
+\Crefname{algocf}{Algorithm}{Algorithms}
+
+\newcommand{\chawin}[1]{\textcolor{green}{Chawin: #1}}
+% \newcommand{\chawin}[1]{}
+\newcommand{\note}[1]{\textcolor{blue}{Note: #1}}
+% \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\ft}[1]{\textcolor{red}{FT: #1}}
+\newcommand{\cut}[1]{\textcolor{orange}{CUTABLE: #1}}
+
+\newcommand{\bp}{Bypassing\xspace}
+\newcommand{\nbp}{Biased-Gradient\xspace}
+
+\renewcommand{\algorithmiccomment}[1]{{\color{gray}\small \# \emph{#1}}}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+% \icmltitlerunning{Realistic Decision-Based Attacks on Machine Learning Systems\hfill\thepage}
+
+\hypersetup{
+pdftitle={CS189 (Spring 2023) Notes},
+pdfsubject={cs.CR,cs.CV,cs.LG},
+pdfauthor={Chawin Sitawarin},
+pdfkeywords={},
+}
+
+
+\title{CS189 (Spring 2023) Notes}
+
+\author{
+    Chawin Sitawarin \thanks{Corresponding email: \texttt{chawins@berkeley.edu}}
+}
+
+\date{
+    University of California, Berkeley
+}
+
+\begin{document}
+
+\maketitle
+
+% \begin{abstract}
+
+% \end{abstract}
+
+\section{Discussion 3}
+
+\subsection{Solving Linear Regression with Gradient Descent}
+
+\begin{quote}
+    ``Why do we care so much about eigenvalues?''
+\end{quote}
+
+There are two billion reasons, but today we will look at one of them.
+
+Let's consider a quadratic function of the form
+\begin{align}
+    f(w) & = \frac{1}{2} \norm{\mX \vw - \vy}^2          \\
+    f(w) & = \frac{1}{2} \vw\T \mQ \vw\T + \vw\T \va + b
+\end{align}
+
+Note that in this special setting we have $\mQ = \mX\T \mX$ and $\va = -\mX\T \vy$.
+%
+Importantly, $\mQ$ is a positive semidefinite matrix, i.e., $\forall \mX, \mQ \succeq 0$.
+%
+Let's also further assume that $\mX\T \mX$ is full rank so we have a stronger condition that $\mQ$ is positive definite, i.e., $\mQ \succ 0$.
+
+Linear regression wants to solve
+\begin{align}
+    \vw^* & = \argmin_{\vw} \frac{1}{2} \norm{\mX \vw - \vy}^2        \\
+          & = \argmin_{\vw} \frac{1}{2} \vw\T \mQ \vw + \vw\T \va + b
+\end{align}
+
+We already know of this solution (analytically):
+\begin{align}
+    \nabla_\vm f(\vw^*) & = \mQ \vw^* + \va = 0        \\
+    \vw^*               & = -\mQ^{-1} \va              \\
+                        & = (\mX\T \mX)^{-1} \mX\T \vy
+\end{align}
+However, inverting an $n \times n$ matrix is $\gO(n^3)$, which is rather expensive for a large $n$, i.e., high-dimensional data.
+%
+Note that realistically, while Guassian Elimination involves $\gO(n^3)$ operations, it does not sufficiently account for the number of bits needed to represent these intermediate values.
+\begin{enumerate}
+    \item Finding matrix inverse with Gaussian Elimination: \url{https://en.wikipedia.org/wiki/Gaussian_elimination#Finding_the_inverse_of_a_matrix}
+    \item Why it is actually $\gO({n^5})$ instead of $\gO({n^3})$: \url{https://en.wikipedia.org/wiki/Gaussian_elimination#Computational_complexity} and \url{https://rjlipton.wpcomstaging.com/2015/01/14/forgetting-results/}
+\end{enumerate}
+
+In short, we rarely want to invert a matrix in practice.
+
+Now we will consider the gradient descent algorithm for solving linear regression.
+%
+\todo{what is complexity?}
+We will denote the eigenvalues of $\mQ$ as $\lambda_1 > \lambda_2 > \ldots > \lambda_n > 0$ (since we assume that $\mQ$ is full rank).
+%
+\begin{align}
+    f(w_{t+1}) & = f(w_t - \alpha \nabla f(w_t))                                                                                                                                          \\
+               & =  f(w_t) - \alpha \nabla f(w_t)\T \nabla f(w_t) + \frac{\alpha^2}{2} \nabla f(w_t)\T \nabla^2 f(\zeta_{w_t,\alpha}) \nabla f(w_t) &  & \mathrm{(MVT)}                   \\
+               & = f(w_t) - \alpha \norm{\nabla f(w_t)}^2 + \frac{\alpha^2}{2} \nabla f(w_t)\T Q \nabla f(w_t)                                                                            \\
+               & \le f(w_t) - \alpha \norm{\nabla f(w_t)}^2 + \frac{\alpha^2 \lambda_1}{2} \norm{\nabla f(w_t)}^2                                   &  & (\text{Max. eigenvalue of } \mQ) \\
+\end{align}
+Choosing an optimal step size $\alpha = 1/\lambda$, we get
+\begin{align}
+    f(w_{t+1}) \le f(w_t) - \frac{\alpha}{2} \norm{\nabla f(w_t)}^2
+\end{align}
+Note that choosing $\alpha > 1/\lambda$ will mean that the gradient descent algorithm will diverge.
+%
+So knowing the largest eigenvalue is already important for choosing a good step size and hence ensuring that the gradient descent algorithm will converge.
+%
+
+We can end our proof here and get a convergence rate of $\gO(1 / T)$, but we can do better under the assumption that $\mQ$ is PD.
+\begin{align}
+    f(w_{t+1})       & \le f(w_t) - \frac{\alpha}{2} \norm{\nabla f(w_t)}^2                                                                   \\
+    f(w_{t+1})       & \le f(w_t) - \alpha \lambda_n \left(f(w_t) - f^*\right)                     &  & \text{(Polyak-Lojasiewicz condition)} \\
+    f(w_{t+1}) - f^* & \le f(w_t) - f^* - \alpha \lambda_n \left(f(w_t) - f^*\right)                                                          \\
+    f(w_{t+1}) - f^* & \le (1 - \alpha \lambda_n) \left(f(w_t) - f^*\right)                                                                   \\
+    f(w_T) - f^*     & \le (1 - \alpha \lambda_n)^T \left(f(w_0) - f^*\right)                                                                 \\
+    f(w_T) - f^*     & \le \exp\left(-\alpha \lambda_n T\right) \left(f(w_0) - f^*\right)          &  & (1 + x \le e^x)                       \\
+                     & = \exp\left(-\frac{\lambda_n}{\lambda_1} T\right) \left(f(w_0) - f^*\right)
+\end{align}
+This means that the gradient descent algorithm converges exponentially fast at a rate of $\gO(\exp(-T))$.
+%
+And finally, the closer $\lambda_n$ is to $\lambda_1$, the faster the gradient descent algorithm will converge.
+
+In general, the \emph{condition number} of the problem is defined as:
+\begin{align}
+    \kappa & = \frac{\lambda_1}{\lambda_n}
+\end{align}
+``Poorly conditioned'' problems have a large condition number, and ``well-conditioned'' problems have a small condition number (close to 1).
+%
+Even when the rate is exponential but the condition number is very large, the gradient descent algorithm can still converge very slowly (in the worst case).
+
+In general, if we are dealing with other non-quadratic function, we can still replace $\mQ$ with the Hessian matrix $\mH(\vw) \coloneqq \nabla^2 f(\vw)$, and everything we talk about still holds.
+%
+$\lambda_1$ corresponds to the $L$-Lipschitz constant of the gradients of $f$.
+%
+This generally tells how smooth $f$ is, and larger $L$ means that $f$ is less smooth (gradients change fast in some directions).
+%
+On the other hand, $\lambda_n$ corresponds to the ``strong'' convexity of $f$, a stronger condition than convexity.
+
+Reference: \url{https://www.cs.cornell.edu/courses/cs4787/2020sp/lectures/Lecture2.pdf}
+
+% \bibliography{reference.bib}
+% \bibliographystyle{abbrvnat}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\appendix
+\onecolumn
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
