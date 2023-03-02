@@ -1,0 +1,176 @@
+\documentclass[letterpaper,12pt]{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+% \usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2023} with \usepackage[nohyperref]{icml2023} above.
+% \usepackage{hyperref}
+\usepackage{natbib}
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+\usepackage{multicol}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage{arxiv}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\input{math_commands.tex}
+
+% if you use cleveref..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+\usepackage[disable,textsize=tiny]{todonotes}
+% \usepackage[textsize=tiny]{todonotes}
+
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage[pagebackref]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    allcolors=DarkBlue
+%   allbordercolors=red
+}
+\usepackage{courier}
+\usepackage{xspace}
+\usepackage{bm}
+\usepackage{wrapfig}
+\usepackage{oubraces}
+\usepackage{amsthm}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\RestyleAlgo{ruled}
+\definecolor{Gray}{gray}{0.7}
+\newcolumntype{g}{>{\columncolor{Gray}}r}
+
+\def\Ex{\mathop{\mathbb{E}}}
+\def\P{\mathop{\mathrm{P}}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\sgn}[1]{\text{sign}\left(#1\right)}
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+\def\minop{\mathop{\rm min}\limits}
+\def\maxop{\mathop{\rm max}\limits}
+\newcommand{\ber}[1]{\mathrm{Bern}\left(#1\right)}
+\def\unif{\mathcal{U}}
+\def\w{\vw}
+\def\X{\mX}
+\def\y{\vy}
+\def\x{\vx}
+\def\eqref#1{Eqn.~(\ref{#1})}
+\def\figref#1{Fig.~\ref{#1}}
+
+% \crefname{algocf}{alg.}{algs.}
+\Crefname{algocf}{Algorithm}{Algorithms}
+
+\newcommand{\chawin}[1]{\textcolor{green}{Chawin: #1}}
+% \newcommand{\chawin}[1]{}
+\newcommand{\note}[1]{\textcolor{blue}{Note: #1}}
+% \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\question}[1]{\textcolor{orange}{\textit{#1}}}
+
+
+\renewcommand{\algorithmiccomment}[1]{{\color{gray}\small \# \emph{#1}}}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+% \icmltitlerunning{Realistic Decision-Based Attacks on Machine Learning Systems\hfill\thepage}
+
+\hypersetup{
+pdftitle={CS189/289A Spring 2023},
+pdfsubject={cs.CR,cs.CV,cs.LG},
+pdfauthor={Chawin Sitawarin},
+pdfkeywords={},
+}
+
+
+\title{CS189/289A Spring 2023\\Least-Norm Solution of Least Square Problem}
+
+\author{
+    Chawin Sitawarin \thanks{Corresponding email: \texttt{chawins@berkeley.edu}}
+}
+
+\date{
+    University of California, Berkeley
+}
+
+\begin{document}
+
+\maketitle
+
+Demo: \url{https://colab.research.google.com/drive/1AtUrdCJkDr2P8CSTYd_evvm6J14Da7rr}
+
+\section{What is Least-Norm Solution?}
+
+In this discussion section, we will go over the Problem 1 and 2 in the worksheet which introduces and proves some basic properties of the least-norm solution of the least square problem (its uniqueness, the pseudo-inverse, etc.).
+
+\section{SGD Finds the Least-Norm Solution}
+
+The demo will show that (stochastic) gradient descent is guaranteed to find the least-norm solution when the weight is initialized as zero.
+The intuition is that all the gradient updates live in the row space of the data matrix $\mX$, and the least-norm solution is the only solution in the row space.
+
+% \bibliography{reference.bib}
+% \bibliographystyle{abbrvnat}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\appendix
+\onecolumn
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
